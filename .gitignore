@@ -1,0 +1,6 @@
+web
+cli
+*swp
+.vscode
+.DS_Store
+.env

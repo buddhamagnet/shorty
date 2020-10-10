@@ -1,14 +1,11 @@
 package store
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/gomodule/redigo/redis"
 )
 
 func dial() (redis.Conn, error) {
-	return redis.Dial("tcp", fmt.Sprintf("%s:%s", os.Getenv("REDIS_URL"), os.Getenv("REDIS_PORT")))
+	return redis.Dial("tcp", "localhost:6379")
 }
 
 // Put persists data in the back end.

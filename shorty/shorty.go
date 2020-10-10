@@ -7,8 +7,21 @@ import (
 	"github.com/google/uuid"
 )
 
+// ShortenerError is a custom error type for the shortener engine.
+type ShortenerError struct {
+	Code    int
+	message string
+}
+
+func (e ShortenerError) Error() string {
+	return e.message
+}
+
 // Shorten generates a 6-character string from a UUID.
 func Shorten(url string) (string, error) {
+	if !IsValidURL(url) {
+		return "", ShortenerError{400, "Invalid URL"}
+	}
 	shortened := uuid.New().String()[:6]
 	return store.Put(url, shortened)
 }

@@ -33,10 +33,18 @@ func Shortener(w http.ResponseWriter, r *http.Request) {
 	}
 	shortened, err := shorty.Shorten(longURL)
 	if err != nil {
-		log.Println(err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "Unable to store data")
-		return
+		switch e := err.(type) {
+		case shorty.ShortenerError:
+			log.Println(e.Error())
+			w.WriteHeader(e.Code)
+			fmt.Fprintf(w, "Unable to store data")
+			return
+		default:
+			log.Println(err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintf(w, "Unable to store data")
+			return
+		}
 
 	}
 	fmt.Fprintf(w, shortened)

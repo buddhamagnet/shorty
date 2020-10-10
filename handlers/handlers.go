@@ -2,10 +2,15 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
-	"buddhamagnet/shorty/shorty"
+	"github.com/buddhamagnet/shorty/shorty"
+	"github.com/buddhamagnet/shorty/store"
+	"github.com/gorilla/mux"
 )
+
+const rick = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 // Ping is the healthcheck endpoint for the service.
 func Ping(w http.ResponseWriter, r *http.Request) {
@@ -26,10 +31,26 @@ func Shortener(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Please supply a valid URL")
 		return
 	}
-	fmt.Fprintf(w, shorty.Shorten())
+	shortened, err := shorty.Shorten(longURL)
+	if err != nil {
+		log.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Unable to store data")
+		return
+
+	}
+	fmt.Fprintf(w, shortened)
 }
 
-// Decoder redirects to a URL given a short
-func Decoder(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "https://www.google.com", 301)
+// Redirector redirects to a URL given a short
+func Redirector(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	log.Println(vars)
+	longURL, err := store.Get(vars["id"])
+	if err != nil || longURL == "" {
+		// Rick roll.
+		longURL = rick
+	}
+	http.Redirect(w, r, longURL, 301)
 }

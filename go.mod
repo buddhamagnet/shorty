@@ -1,8 +1,10 @@
-module buddhamagnet/shorty
+module github.com/buddhamagnet/shorty
 
 go 1.15
 
 require (
+	github.com/boltdb/bolt v1.3.1
+	github.com/gomodule/redigo v1.8.2
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0

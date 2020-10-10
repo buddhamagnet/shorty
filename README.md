@@ -3,10 +3,10 @@
 Shorty is a relatively naive URL shortener built with
 minimal dependencies:
 
-* [uuid] for generating unique IDS for URLs.
-* [mux] for routing.
-* [godotenv] to load environment variables.
-* [pflag] for command line flags (I like POSIX flags).
+* [uuid](https://github.com/google/uuid) for generating unique IDS for URLs.
+* [mux](https://github.com/gorilla/mux) for routing.
+* [godotenv](https://github.com/joho/godotenv) to load environment variables.
+* [pflag](https://github.com/spf13/pflag) for command line flags (I like POSIX flags).
 
 ### GETTING THE CODE
 
@@ -42,7 +42,7 @@ decode IDs back into the original long URLs and does not depend on the web servi
 Either build the binary or or run as follows:
 
 * ```go run cli/main.go --url=<url>```
-* ```go run cli/main.go --id=<id>```
+* ```go run cli/main.go --service=decode --id=<id>```
 
 ### TESTS
 

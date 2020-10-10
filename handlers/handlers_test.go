@@ -60,12 +60,6 @@ func TestShortenerMissingURL(t *testing.T) {
 		t.Errorf("Decoder returned incorrect status code: received %v expected %v",
 			status, http.StatusBadRequest)
 	}
-
-	expected := "Please supply a URL parameter"
-	if rr.Body.String() != expected {
-		t.Errorf("Ping returned unexpected value: received %v expected %v",
-			rr.Body.String(), expected)
-	}
 }
 
 func TestShortenerBadURL(t *testing.T) {
@@ -81,12 +75,6 @@ func TestShortenerBadURL(t *testing.T) {
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("Decoder returned incorrect status code: received %v expected %v",
 			status, http.StatusBadRequest)
-	}
-
-	expected := "Please supply a valid URL"
-	if rr.Body.String() != expected {
-		t.Errorf("Ping returned unexpected value: received %v expected %v",
-			rr.Body.String(), expected)
 	}
 }
 

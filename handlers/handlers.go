@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,6 +13,23 @@ import (
 
 const rick = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
+// ID represents a short URL ID for use in responses.
+type ID struct {
+	ShortID string `json:"id"`
+}
+
+// APIError represents an error at the API level.
+type APIError struct {
+	Message string `json:"error"`
+}
+
+func ErrorReponse(w http.ResponseWriter, statusCode int, message string) {
+	w.WriteHeader(statusCode)
+	w.Header().Set("Content-Type", "application/json")
+	err, _ := json.Marshal(APIError{message})
+	fmt.Fprintf(w, string(err))
+}
+
 // Ping is the healthcheck endpoint for the service.
 func Ping(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "OK")
@@ -21,14 +39,12 @@ func Ping(w http.ResponseWriter, r *http.Request) {
 func Shortener(w http.ResponseWriter, r *http.Request) {
 	longURL := r.URL.Query().Get("url")
 	if longURL == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Please supply a URL parameter")
+		ErrorReponse(w, http.StatusBadRequest, "Please supply a URL parameter")
 		return
 	}
 
 	if !shorty.IsValidURL(longURL) {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Please supply a valid URL")
+		ErrorReponse(w, http.StatusBadRequest, "Please supply a valid URL")
 		return
 	}
 	shortened, err := shorty.Shorten(longURL)
@@ -36,18 +52,17 @@ func Shortener(w http.ResponseWriter, r *http.Request) {
 		switch e := err.(type) {
 		case shorty.ShortenerError:
 			log.Println(e.Error())
-			w.WriteHeader(e.Code)
-			fmt.Fprintf(w, "Unable to store data")
+			ErrorReponse(w, e.Code, "Unable to to store data")
 			return
 		default:
 			log.Println(err.Error())
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprintf(w, "Unable to store data")
+			ErrorReponse(w, http.StatusInternalServerError, "Unable to to store data")
 			return
 		}
-
 	}
-	fmt.Fprintf(w, shortened)
+	data, _ := json.Marshal(ID{shortened})
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(w, string(data))
 }
 
 // Redirector redirects to a URL given a short

@@ -1,5 +1,5 @@
-web
-cli
+web/web
+cli/cli
 *swp
 .vscode
 .DS_Store

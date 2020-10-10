@@ -1,6 +1,8 @@
 package store
 
 import (
+	"errors"
+
 	"github.com/gomodule/redigo/redis"
 )
 
@@ -31,7 +33,7 @@ func Get(shortened string) (string, error) {
 	defer conn.Close()
 	longURL, err := redis.String(conn.Do("GET", shortened))
 	if err != nil {
-		return "", err
+		return "", errors.New("unable to retrieve content")
 	}
 	return longURL, err
 }

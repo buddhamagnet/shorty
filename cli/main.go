@@ -1,22 +1,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
 
+	"github.com/buddhamagnet/shorty/cli/flags"
 	"github.com/buddhamagnet/shorty/shorty"
 	"github.com/joho/godotenv"
-	flag "github.com/spf13/pflag"
 )
-
-var longURL, service, id string
-
-func init() {
-	flag.StringVarP(&longURL, "url", "u", "", "URL to shorten")
-	flag.StringVar(&id, "id", "", "shortened URL ID to decode")
-	flag.StringVarP(&service, "service", "s", "shorten", "service to invoke")
-}
 
 func main() {
 	err := godotenv.Load()
@@ -24,31 +17,28 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	flag.Parse()
+	cfg, output, err := flags.Parse(os.Args[0], os.Args[1:])
+	if err == flag.ErrHelp {
+		fmt.Println(output)
+		os.Exit(2)
+	} else if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
 
-	switch service {
+	switch cfg.Service {
 	case "shorten":
-		if longURL == "" {
-			fmt.Println("usage: cli (-u|--url)=<url>")
-			os.Exit(1)
-		}
-		id, err := shorty.Shorten(longURL)
+		id, err := shorty.Shorten(cfg.LongURL)
 		if err != nil {
 			log.Fatalln(err)
 		}
-
 		fmt.Printf("shortened URL: http://localhost:8080/" + id + "\n")
-
 	case "decode":
-		if id == "" {
-			fmt.Println("usage: cli (--id)=<id>")
-			os.Exit(1)
-		}
-		longURL, err := shorty.Decode(id)
+		longURL, err := shorty.Decode(cfg.ID)
 		if err != nil {
-			log.Fatalln(err)
+			fmt.Println(err)
+			os.Exit(0)
 		}
-
 		fmt.Printf("long URL: " + longURL + "\n")
 	}
 

@@ -46,5 +46,4 @@ Either build the binary or or run as follows:
 
 ### TESTS
 
-The codebase is covered for tests that exercise the web service and convenience functions, including table tests. Given more time I would have mocked Redis on
-the back end but given the simplicity of this application that seemed like overkill.
+The codebase is covered for tests that exercise the web service and convenience functions, including table tests. The CLI version is also comprehensively tested for all flag permutations. Given more time I would have mocked Redis on the back end but given the simplicity of this application that seemed like overkill.

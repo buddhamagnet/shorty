@@ -23,6 +23,7 @@ type APIError struct {
 	Message string `json:"error"`
 }
 
+// ErrorReponse writes the appropriate headers and data back on error.
 func ErrorReponse(w http.ResponseWriter, statusCode int, message string) {
 	w.WriteHeader(statusCode)
 	w.Header().Set("Content-Type", "application/json")
@@ -65,11 +66,10 @@ func Shortener(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(data))
 }
 
-// Redirector redirects to a URL given a short
+// Redirector redirects to a URL given a short URL ID.
 func Redirector(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	log.Println(vars)
 	longURL, err := store.Get(vars["id"])
 	if err != nil || longURL == "" {
 		// Rick roll.

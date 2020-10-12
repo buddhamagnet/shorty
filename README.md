@@ -7,6 +7,7 @@ minimal dependencies:
 * [mux](https://github.com/gorilla/mux) for routing.
 * [godotenv](https://github.com/joho/godotenv) to load environment variables.
 * [pflag](https://github.com/spf13/pflag) for command line flags (I like POSIX flags).
+* [redigo](https://github.com/gomodule/redigo) - Redis client.
 
 ### GETTING THE CODE
 

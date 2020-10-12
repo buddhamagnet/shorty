@@ -31,8 +31,22 @@ Or clone the repo and fire up the containers via ```docker-compose up```.
 
 The web service exposes three endpoints, a healthcheck endpoint at root, a URL shortener and a redirection service. 
 
-* To get an ID for a long URL, make a reques to ```http://localhost:8080/shorten?url=<longurl>```. If the URL is valid the service will return an ID.
+* To get an ID for a long URL, make a POST request to ```http://localhost:8080/shorten``` with a JSON payload like ```{"url":"http://www.google.com"}```. If the URL is valid the service will return an ID.
 * To use a short URL, make a request to ```http://localhost:8080/<id>```. The service will issue a 301 redirect to that resource.
+
+#### EXAMPLES
+
+POST request to generate a short URL, using [httpie](https://httpie.org/):
+
+```txt
+http -f POST http://localhost:8080/shorten <<<'{"url":"http://google.com"}'
+```
+
+```json
+{
+    "id": "c9bd4a"
+}
+```
 
 ### CLI
 

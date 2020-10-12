@@ -17,9 +17,9 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	r := mux.NewRouter()
-	r.HandleFunc("/", handlers.Ping)
-	r.HandleFunc("/shorten", handlers.Shortener)
-	r.HandleFunc("/{id}", handlers.Redirector)
+	r.HandleFunc("/", handlers.Ping).Methods("GET")
+	r.HandleFunc("/shorten", handlers.Shortener).Methods("POST")
+	r.HandleFunc("/{id:[a-zA-Z0-9]{6}}", handlers.Redirector).Methods("GET")
 	http.Handle("/", r)
 	fmt.Printf("shorty running on port %s\n", os.Getenv("SHORTENER_PORT"))
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("SHORTENER_PORT"), nil))

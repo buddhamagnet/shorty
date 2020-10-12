@@ -34,6 +34,16 @@ The web service exposes three endpoints, a healthcheck endpoint at root, a URL s
 * To get an ID for a long URL, make a POST request to ```http://localhost:8080/shorten``` with a JSON payload like ```{"url":"http://www.google.com"}```. If the URL is valid the service will return an ID.
 * To use a short URL, make a request to ```http://localhost:8080/<id>```. The service will issue a 301 redirect to that resource.
 
+* I added a GraphQL layer for shortening URLs, to spin this up, navigate to the ```graphql``` folder, run ```yarn``` and ```yarn run start```, navigate to port 5000 and issue a request, example:
+
+```javascript
+mutation shorten {
+  shorten(url: "http://www.google.com") {
+    id
+  }
+}
+```
+
 #### EXAMPLES
 
 POST request to generate a short URL, using [httpie](https://httpie.org/):

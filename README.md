@@ -24,10 +24,6 @@ Adapt the ```.env-sample``` file, save as ```.env``` and profit!
 
 Just clone the repo and run ```go run web/main.go``` to boot the web service or ```go run cli/main.go``` to run the CLI version.
 
-#### DOCKERIZE ALL THE THINGS
-
-Or clone the repo and fire up the containers via ```docker-compose up```.
-
 ###  WEB API
 
 The web service exposes three endpoints, a healthcheck endpoint at root, a URL shortener and a redirection service. 

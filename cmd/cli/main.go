@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/buddhamagnet/shorty/cli/flags"
+	"github.com/buddhamagnet/shorty/flags"
 	"github.com/buddhamagnet/shorty/shorty"
 	"github.com/joho/godotenv"
 )

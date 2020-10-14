@@ -22,7 +22,7 @@ Adapt the ```.env-sample``` file, save as ```.env``` and profit!
 
 #### GO RUN
 
-Just clone the repo and run ```go run web/main.go``` to boot the web service or ```go run cli/main.go``` to run the CLI version.
+Just clone the repo and run ```go run cmd/web/main.go``` to boot the web service or ```go run cmd/cli/main.go``` to run the CLI version.
 
 ###  WEB API
 
@@ -62,8 +62,8 @@ decode IDs back into the original long URLs and does not depend on the web servi
 
 Either build the binary or or run as follows:
 
-* ```go run cli/main.go --url=<url>```
-* ```go run cli/main.go --service=decode --id=<id>```
+* ```go run cmd/cli/main.go --url=<url>```
+* ```go run cmd/cli/main.go --service=decode --id=<id>```
 
 ### TESTS
 
